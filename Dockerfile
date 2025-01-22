@@ -4,11 +4,11 @@ RUN rm -rf /app
 RUN mkdir /app
 
 WORKDIR /app
-COPY ./main7.go /app/altscore
+COPY ./maing.go /app/altscore
 
 WORKDIR /app/altscore
 # Compilar la aplicación
-RUN CGO_ENABLED=0 go build -o myapp ./main7.go
+RUN CGO_ENABLED=0 go build -o myapp ./maing.go
 
 # Etapa 2: Crear una imagen mínima
 FROM alpine:latest
