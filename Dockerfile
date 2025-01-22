@@ -3,8 +3,9 @@ RUN rm -rf /app
 
 RUN mkdir /app
 
-WORKDIR /app
-COPY ./main.go /app/altscore
+WORKDIR /app/altscore
+
+COPY ./main.go .
 
 WORKDIR /app/altscore
 # Compilar la aplicación
@@ -17,7 +18,7 @@ ENV TZ=America/Bogota
 WORKDIR /app
 
 # Copiar solo los archivos necesarios desde la etapa de construcción
-COPY --from=builder /app/altscore /app/myapp
+COPY --from=builder /app/altscore/myapp .
 
 # Comando para ejecutar la aplicación
 CMD ["./myapp"]
