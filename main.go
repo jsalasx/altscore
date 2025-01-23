@@ -23,8 +23,9 @@ func main() {
 		// Convertir el parámetro de presión a float
 		pressure, err := strconv.ParseFloat(pressureParam, 64)
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "El parámetro 'pressure' debe ser un número válido.",
+			return c.JSON(fiber.Map{
+				"specific_volume_liquid": 0,
+				"specific_volume_vapor":  0,
 			})
 		}
 
