@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"math"
 	"strconv"
 
@@ -12,6 +13,11 @@ func main() {
 
 	// Ruta principal para el diagrama de cambio de fase
 	app.Get("/phase-change-diagram", func(c *fiber.Ctx) error {
+		log.Println("Solicitud recibida para '/phase-change-diagram'")
+
+		// Leer el cuerpo de la solicitud
+		body := c.Body()
+		log.Printf("Contenido del cuerpo del request: %s\n", string(body))
 		// Leer el parámetro de presión
 		pressureParam := c.Query("pressure")
 		if pressureParam == "" {
