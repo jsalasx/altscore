@@ -6,7 +6,8 @@ RUN mkdir /app
 WORKDIR /app/altscore
 
 COPY ./main.go .
-
+COPY ./go.mod .
+COPY ./go.sum .
 WORKDIR /app/altscore
 # Compilar la aplicación
 RUN CGO_ENABLED=0 go build -o myapp ./main.go
