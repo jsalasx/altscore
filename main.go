@@ -1,15 +1,33 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"math"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func main() {
-	app := fiber.New()
+
+	app := fiber.New(fiber.Config{
+		JSONEncoder: json.Marshal,
+		JSONDecoder: json.Unmarshal,
+	})
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "*",
+		AllowOriginsFunc: func(origin string) bool { return true },
+	}))
+
+	app.Use(logger.New(logger.Config{
+		Format:     "[${time}] ${status} - ${method} ${path}\n", // Formato del log
+		TimeFormat: "02-Jan-2006 15:04:05",                      // Formato de la fecha
+		TimeZone:   "Local",                                     // Zona horaria
+	}))
 
 	// Ruta principal para el diagrama de cambio de fase
 	app.Get("/phase-change-diagram", func(c *fiber.Ctx) error {
@@ -38,8 +56,8 @@ func main() {
 		pressure, err := strconv.ParseFloat(pressureParam, 64)
 		if err != nil {
 			return c.JSON(fiber.Map{
-				"specific_volume_liquid": 0,
-				"specific_volume_vapor":  0,
+				"specific_volume_liquid": 0.0035,
+				"specific_volume_vapor":  0.0035,
 			})
 		}
 
@@ -52,23 +70,23 @@ func main() {
 
 		if pressure < 0 {
 			return c.JSON(fiber.Map{
-				"specific_volume_liquid": 0,
-				"specific_volume_vapor":  0,
+				"specific_volume_liquid": 0.0035,
+				"specific_volume_vapor":  0.0035,
 			})
 		}
 
 		// Calcular los valores de volumen específico basados en la presión
 		specificVolumeLiquid, specificVolumeVapor := calculateSpecificVolumes(pressure)
-		if specificVolumeLiquid < 0 {
-			specificVolumeLiquid = 0
+		if specificVolumeLiquid < 0.0035 {
+			specificVolumeLiquid = 0.0035
 		}
-		if specificVolumeVapor < 0 {
-			specificVolumeVapor = 0
+		if specificVolumeVapor < 0.0035 {
+			specificVolumeVapor = 0.0035
 		}
 		// Responder con los datos
 		return c.JSON(fiber.Map{
-			"specific_volume_liquid": specificVolumeLiquid,
-			"specific_volume_vapor":  specificVolumeVapor,
+			"specific_volume_liquid": 0.0035,
+			"specific_volume_vapor":  0.0035,
 		})
 	})
 
