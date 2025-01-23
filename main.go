@@ -17,7 +17,15 @@ func main() {
 
 		// Leer el cuerpo de la solicitud
 		body := c.Body()
+		url := c.OriginalURL()
+		log.Printf("URL de la solicitud: %s\n", url)
 		log.Printf("Contenido del cuerpo del request: %s\n", string(body))
+
+		headers := c.GetReqHeaders()
+		for key, value := range headers {
+			log.Printf("Header: %s = %s\n", key, value)
+		}
+
 		// Leer el parámetro de presión
 		pressureParam := c.Query("pressure")
 		if pressureParam == "" {
