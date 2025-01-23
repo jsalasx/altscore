@@ -35,6 +35,13 @@ func main() {
 		// 	})
 		// }
 
+		if pressure < 0 {
+			return c.JSON(fiber.Map{
+				"specific_volume_liquid": 0,
+				"specific_volume_vapor":  0,
+			})
+		}
+
 		// Calcular los valores de volumen específico basados en la presión
 		specificVolumeLiquid, specificVolumeVapor := calculateSpecificVolumes(pressure)
 		if specificVolumeLiquid < 0 {
