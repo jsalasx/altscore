@@ -29,15 +29,20 @@ func main() {
 		}
 
 		// Validar que la presión esté dentro de un rango permitido
-		if pressure < 0.05 || pressure > 10 {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "El parámetro 'pressure' debe estar en el rango 0.05 < P <= 10 MPa.",
-			})
-		}
+		// if pressure < 0.05 || pressure > 10 {
+		// 	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		// 		"error": "El parámetro 'pressure' debe estar en el rango 0.05 < P <= 10 MPa.",
+		// 	})
+		// }
 
 		// Calcular los valores de volumen específico basados en la presión
 		specificVolumeLiquid, specificVolumeVapor := calculateSpecificVolumes(pressure)
-
+		if specificVolumeLiquid < 0 {
+			specificVolumeLiquid = 0
+		}
+		if specificVolumeVapor < 0 {
+			specificVolumeVapor = 0
+		}
 		// Responder con los datos
 		return c.JSON(fiber.Map{
 			"specific_volume_liquid": specificVolumeLiquid,
